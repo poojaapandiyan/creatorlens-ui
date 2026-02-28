@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CreatorLens</title>
+<style>
+body{font-family:Arial;text-align:center;margin-top:40px;background:#f4f6f8;}
+input,textarea{width:60%;padding:10px;margin:10px;}
+button{padding:10px 20px;background:#4CAF50;color:white;border:none;}
+#result{background:white;padding:20px;margin-top:20px;display:inline-block;}
+</style>
+</head>
+
+<body>
+<h2>🎯 CreatorLens AI Analyzer</h2>
+
+<input id="title" placeholder="Enter Video Title"><br>
+<textarea id="description" placeholder="Enter Description"></textarea><br>
+<input id="category" placeholder="Category (Tech, Travel, etc.)"><br>
+
+<button onclick="analyze()">Analyze</button>
+
+<div id="result"></div>
+
+<script>
+function analyze(){
+fetch("https://YOUR_SPACE_URL/analyze", {
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+title:document.getElementById("title").value,
+description:document.getElementById("description").value,
+category:document.getElementById("category").value
+})
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("result").innerHTML=
+"<h3>📊 Engagement Score: "+data.score+"</h3>"+
+"<b>✨ Suggested Title:</b> "+data.suggested_title+"<br><br>"+
+"<b>🔖 Tags:</b> "+data.tags.join(", ")+"<br><br>"+
+"<b>⏰ Best Time:</b> "+data.best_time+"<br><br>"+
+"<b>🖼️ Thumbnail Tip:</b> "+data.thumbnail_tip;
+});
+}
+</script>
+
+</body>
+</html>
