@@ -23,7 +23,7 @@ button{padding:10px 20px;background:#4CAF50;color:white;border:none;}
 
 <script>
 function analyze(){
-fetch("https://YOUR_SPACE_URL/analyze", {
+fetch("https://creatorlens-backend.hf.space/analyze", {
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
@@ -45,4 +45,5 @@ document.getElementById("result").innerHTML=
 </script>
 
 </body>
+
 </html>
