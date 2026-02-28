@@ -5,8 +5,9 @@
 <style>
 body{font-family:Arial;text-align:center;margin-top:40px;background:#f4f6f8;}
 input,textarea{width:60%;padding:10px;margin:10px;}
-button{padding:10px 20px;background:#4CAF50;color:white;border:none;}
-#result{background:white;padding:20px;margin-top:20px;display:inline-block;}
+button{padding:10px 20px;background:#4CAF50;color:white;border:none;cursor:pointer;}
+button:hover{background:#45a049;}
+#result{background:white;padding:20px;margin-top:20px;display:inline-block;min-width:60%;}
 </style>
 </head>
 
@@ -23,6 +24,9 @@ button{padding:10px 20px;background:#4CAF50;color:white;border:none;}
 
 <script>
 function analyze(){
+
+document.getElementById("result").innerHTML = "⏳ Analyzing...";
+
 fetch("https://creatorlens-backend.hf.space/analyze", {
 method:"POST",
 headers:{"Content-Type":"application/json"},
@@ -32,7 +36,12 @@ description:document.getElementById("description").value,
 category:document.getElementById("category").value
 })
 })
-.then(res=>res.json())
+.then(res => {
+if(!res.ok){
+throw new Error("API not responding");
+}
+return res.json();
+})
 .then(data=>{
 document.getElementById("result").innerHTML=
 "<h3>📊 Engagement Score: "+data.score+"</h3>"+
@@ -40,10 +49,14 @@ document.getElementById("result").innerHTML=
 "<b>🔖 Tags:</b> "+data.tags.join(", ")+"<br><br>"+
 "<b>⏰ Best Time:</b> "+data.best_time+"<br><br>"+
 "<b>🖼️ Thumbnail Tip:</b> "+data.thumbnail_tip;
+})
+.catch(error=>{
+document.getElementById("result").innerHTML =
+"<span style='color:red;'>⚠️ Error connecting to backend.</span>";
+console.error("Error:", error);
 });
 }
 </script>
 
 </body>
-
 </html>
